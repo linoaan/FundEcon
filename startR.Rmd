@@ -25,6 +25,20 @@ It is convenient to use different fonts and colors when using \rcode{R code}, \t
 
 When starting, R loads by default a certain number of libraries; others may be needed later on and will be specified explicitly. 
 
+## Working with projects
+
+A *project* is a working directory, where we can put all data, files, etc. 
+
+It is strongly recommended to work with projects because it makes the workflow much more orderly and streamlined, especially when handling several data sets. 
+
+Ideally, a work project (*e.g.*, a semester course) is contained in an RStudio project containing all the needed material. 
+
+## Setting up a new project
+
+Go to *File* in the menu bar; in the drop-down menu, select *New Project...*, a pop-up window appears; select *New Directory* and then *New Project*. In the field named *Directory name* put a meaningful name for your new project and then select the folder where you want to save your project. 
+
+You can also follow the instructions in the video \textcolor{blue}{\href{https://rpubs.com/laan/626180}{here}} (last-but-one slide). 
+
 # Descriptive statistics
 
 Descriptive statistics is the process of summarizing the observed values of a sample for further study. 
@@ -607,7 +621,9 @@ t.test(faithful$eruptions, mu = 3, alternative = "greater")
 
 We reject $H_0$ and conclude that, on average, the durations of the eruptions are greater than 3 minutes. 
 
-### Power of the test
+## Power of the test
+
+### Type I error
 
 The level of significance is the probability of committing a Type I error
 \[
@@ -618,6 +634,8 @@ with
   \alpha = \Pr(\text{Type I error .})
 \]
 A Type I error is also known as *false positive*. If $\alpha = .05$, we are willing to have 5\% of false positives in our tests or, in other words, that we are willing to accept a 5\% chance to be wrong when $H_0$ is true. 
+
+### Type II error
 
 We can reduce the false positives by reducing the level of significance, say, from $.05$ to $.01$. However, this reduction may cause an increase of a Type II error (also known as *false negative*:
 \[
@@ -630,7 +648,7 @@ The probability of a type II error
 The *power* of the test is
 \[
   \text{Power of the test } = 1- \beta 
-  = \text{Reject } H_0\text{ when } H_0 \text{ is false.}
+  = \Pr(\text{Reject } H_0\text{ when } H_0 \text{ is false}).
 \]
 To compute the power of a test, we need to consider a specific alternative. For example, to compute the power of the test on the mean time of eruptions at Old Faithful, we consider 
 \[
@@ -731,12 +749,12 @@ m1 <- lm(eruptions ~ waiting)
 summary(m1)
 ```
 
-However, the convenience to reference directly to a variable's name may turn into a liability, because often different data sets may share the same name for different variables. For example, the name \texttt{wage} can appear in different econometric data sets. To avoid this confusion, it is strongly recommended that, one we are done with using a specific data set, we remove that data set from R search path by means of \rcode{detach()}:
+However, the convenience to reference directly to a variable's name may turn into a liability, because often different data sets may share the same name for different variables. For example, the name \texttt{wage} can appear in different econometric data sets. To avoid this confusion, it is strongly recommended that, once we are done with using a specific data set, we remove that data set from R search path by means of \rcode{detach()}:
 ```{r}
 detach(faithful)
 ```
 
-See \textcolor{blue}{\href{https://www.r-bloggers.com/2011/05/to-attach-or-not-attach-that-is-the-question/}{here}} for a discussion about attaching or not; alternatives to \rcode{attach()} are considered, among them is the use of \rcode{with()}
+See \textcolor{blue}{\href{https://www.r-bloggers.com/2011/05/to-attach-or-not-attach-that-is-the-question/}{here}} for a discussion about attaching or not; alternatives to \rcode{attach()} are also considered, among them is the use of \rcode{with()}
 ```{r}
 m2 <- with(faithful, lm(eruptions ~ waiting))
 summary(m2)
