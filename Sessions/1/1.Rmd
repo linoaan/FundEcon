@@ -1,0 +1,120 @@
+---
+title: "Regresión lineal simple"
+author: "Lino AA Notarantonio (lino@tec.mx)"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output: beamer_presentation
+toc: false
+header-includes:
+  - \usepackage{xcolor}
+  - \usepackage{hyperref}
+  - \newcommand{\rcode}[1]{\textcolor{magenta}{\texttt{#1}}}
+---
+
+```{r, echo=FALSE}
+options(warn = -1)
+```
+
+### Estimación por Mínimos Cuadrados Ordinarios (MCO)
+
+* Se dispone de una muestra aleatoria $(ingreso_i, gasto_i)_{i=1}^N$, $N$ tamaño muestral. 
+
+```{r, out.width="0.7\\linewidth", include=TRUE, fig.align="center", fig.cap=c("Gasto como función del ingreso"), echo=FALSE}
+knitr::include_graphics("fig1.pdf")
+```
+
+### Estimación por Mínimos Cuadrados Ordinarios (MCO)
+
+1. Estimar el modelo 
+\[
+  gasto = \beta_0 + \beta_1 ingreso + u
+\]
+por MCO. 
+
+2. Optimizar la función ($SRC$: suma de residuos cuadrados)
+\[
+  SRC(\beta_0, \beta_1) = 
+    \sum_{i=1}^N \left[
+      y_i - (\beta_0 + \beta_1 x_i)
+    \right]^2
+\]
+
+### Cargar los datos en RStudio
+
+1. Bajar el archivo de datos \texttt{gastos.csv} y guardarlo en el Escritorio. 
+
+2. Abrir RStudio; en la barra de menu dar click en \texttt{File}
+
+3. Seleccionar \texttt{Import Dataset} y después \texttt{From Text (readr)}
+
+4. Se abre una ventana que le permitirá cargar el archivo en RStudio. 
+
+5. Estimar el modelo $Gasto = \beta_0 + \beta_1 Ingreso + u$.
+
+### Estimar el modelo con R
+
+* Copiar y pegar el código a continuación en la consola.
+
+* El nombre del archivo de datos es \texttt{gasto}.
+
+* El código se debe ejecutar secuencialmente en la consola. 
+
+\vspace{.5cm}
+
+```{r, eval=FALSE}
+m <- lm(Gasto ~ Ingreso, data = gasto)
+```
+
+```{r, eval=FALSE}
+summary(m)
+```
+
+### Modelo estimado
+
+```{r,echo=FALSE}
+setwd("~/Desktop")
+gasto <- read.csv("gasto.csv")
+m <- lm(Gasto ~ Ingreso, data = gasto)
+summary(m)
+```
+
+### Modelo estimado: Plot
+
+```{r,echo=FALSE}
+library(latex2exp)
+plot(gasto$Ingreso, gasto$Gasto, main = TeX("$\\widehat{Gasto} = 7.38870 + .23220 \\cdot Ingreso"), xlab = "Ingreso", ylab="Gasto")
+abline(lm(Gasto ~ Ingreso, data = gasto), col = "red")
+```
+
+
+## Tarea
+
+### Tarea: Ecuaciones normales
+
+Minimizar (SRC: suma de los residuos cuadrados)
+\[
+  SRC(\beta_0, \beta_1) =  \sum_{i=1}^n  \left[ y_i - (\beta_0 + \beta_1 x_i) \right]^2.
+\]
+Punto crítico de la función $SRC$: Sistema lineal $2\times 2$ 
+\begin{align*}
+  \frac{\partial SRC}{\partial \beta_0} & = \boxed{(-2)\sum_{i=1}^n 
+  \left[ y_i - (\alert{\beta_0} + \alert{\beta_1} x_i) \right] = 0} \\
+  \frac{\partial SRC}{\partial \beta_1} & = \boxed{(-2)\sum_{i=1}^n x_i
+  \left[ y_i - (\alert{\beta_0} + \alert{\beta_1} x_i) \right] = 0}
+\end{align*}
+($\beta_0$, $\beta_1$: incógnitas)
+
+### Tarea: Ecuaciones normales
+
+* Mostrar que el sistema lineal en la diapositiva anterior se puede escribir como
+\begin{align*}
+  n\alert{\beta_0} + \left(\sum_{i=1}^n x_i \right)
+    \alert{\beta_1} & = \sum_{i=1}^n y_i \\
+  \left(\sum_{i=1}^n x_i \right)\alert{\beta_0} + \left(\sum_{i=1}^n x_i^2 \right)
+  \alert{\beta_1} & = \sum_{i=1}^n x_i y_i
+\end{align*}
+
+* Mostrar que el sistema lineal tiene solución si, y sólo si, la varianza muestral de la variable independiente $x$ es diferente de cero. 
+
+\vspace{.25cm}
+
+**Entrega** Lunes 5 de abril. antes de las 09:00AM en el espacio de Tareas de Canvas. 
